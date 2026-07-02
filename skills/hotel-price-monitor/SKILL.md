@@ -48,7 +48,7 @@ python scripts/install.py
 
 **Method 3：Manual download standalone executable (No Node/Python needed)**
 如果环境中既没有 npm 也没有 Python，请从以下 Release 页面下载对应的单文件程序（Windows: `rgg-win.exe` / `rgg-windows.exe`, Mac: `rgg-macos`, Linux: `rgg-linux`）：
-`https://github.com/RollingGo-AI/oauth-hotel-cli-overseas-overseas/releases/latest`
+`https://github.com/RollingGo-AI/oauth-hotel-cli-overseas/releases/latest`
 
 下载后将其重命名为 `rgg`（Windows下为 `rgg.exe`），赋予执行权限，并放入系统环境变量 PATH 或技能目录的 `bin` 文件夹中。
 

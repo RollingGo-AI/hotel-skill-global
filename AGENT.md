@@ -32,7 +32,7 @@
 1. 环境依赖校验：在执行任何业务命令前，必须确保本地已安装 `rgg` 命令行工具。若提示命令未找到，你必须执行以下逻辑进行安装：
    - 优先尝试 npm 安装：若有 Node.js 运行环境，优先尝试执行 `npm install -g @rollinggo/hotel-global@latest` 进行全局安装。
    - 自动安装脚本（免 Node.js 环境）：若 npm 安装不可用或失败，但环境中有 Python，可以直接在当前激活的技能目录下执行 `python scripts/install.py`（例如 `skills/hotel-core/scripts/install.py`），它将自动判断您的操作系统并下载对应的最新版 `rgg` 独立二进制程序到本地 `bin` 文件夹。
-   - 手动下载免安装版：若以上方法均不可用，你必须判断用户的操作系统，并从 `https://github.com/RollingGo-AI/oauth-hotel-cli-overseas-overseas/releases/latest` 下载对应的独立可执行程序（Windows 下载 `rgg-windows.exe` / `rgg-win.exe`，Mac 下载 `rgg-macos`，Linux 下载 `rgg-linux`）。下载后，将其重命名为 `rgg` 并赋予可执行权限（如有需要），随后通过相对路径或加入环境变量的方式调用该独立程序。
+   - 手动下载免安装版：若以上方法均不可用，你必须判断用户的操作系统，并从 `https://github.com/RollingGo-AI/oauth-hotel-cli-overseas/releases/latest` 下载对应的独立可执行程序（Windows 下载 `rgg-windows.exe` / `rgg-win.exe`，Mac 下载 `rgg-macos`，Linux 下载 `rgg-linux`）。下载后，将其重命名为 `rgg` 并赋予可执行权限（如有需要），随后通过相对路径或加入环境变量的方式调用该独立程序。
    - **自动升级拦截**：每次执行 `rgg` 任何命令时，请密切监控终端输出。如果你在输出中看到包含「有新版本可用」或「运行以下命令更新」的提示框，你必须立刻暂停当前业务，重新按照上述逻辑（优先使用 npm 或自动安装脚本，否则重新下载新版独立文件）升级 `rgg`，升级完成后再继续未完成的业务。这能确保接口永远是最新的。
 2. 强制前置鉴权：在确认环境就绪后，调用任何具体业务命令前，必须先执行命令 rgg whoami 检查登录状态。如果返回结果提示Not logged in，则必须执行命令 rgg login 获取授权链接。你必须提取以 https 开头的完整授权链接，并以文字链接形式直接发送给用户。在用户反馈授权成功前，暂停后续所有业务流程。
 3. 严禁越级下单：真实的酒店预订涉及资金支出。必须严格遵守“查询房型与政策 -> 确认具体房型与入住人信息 -> 执行价格确认锁定价格 -> 用户明确同意下单 -> 执行下单并生成支付链接”的递进逻辑。严禁越过价格确认和用户授权许可直接生成订单。

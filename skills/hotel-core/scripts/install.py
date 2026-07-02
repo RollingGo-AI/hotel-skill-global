@@ -62,7 +62,7 @@ def shutil_copy(response, out_file):
 
 def get_latest_release_assets():
     """Query GitHub API for the latest release assets."""
-    api_url = "https://api.github.com/repos/RollingGo-AI/oauth-hotel-cli-overseas-overseas/releases/latest"
+    api_url = "https://api.github.com/repos/RollingGo-AI/oauth-hotel-cli-overseas/releases/latest"
     req = urllib.request.Request(
         api_url,
         headers={'User-Agent': 'RollingGo-Installer/1.0'}
@@ -146,18 +146,18 @@ def main():
     if not download_url:
         print("Using hardcoded fallback download URL...")
         if system == "windows":
-            download_url = "https://github.com/RollingGo-AI/oauth-hotel-cli-overseas-overseas/releases/latest/download/rgg-win.exe"
+            download_url = "https://github.com/RollingGo-AI/oauth-hotel-cli-overseas/releases/latest/download/rgg-win.exe"
         elif system == "darwin":
-            download_url = "https://github.com/RollingGo-AI/oauth-hotel-cli-overseas-overseas/releases/latest/download/rgg-macos"
+            download_url = "https://github.com/RollingGo-AI/oauth-hotel-cli-overseas/releases/latest/download/rgg-macos"
         else:
-            download_url = "https://github.com/RollingGo-AI/oauth-hotel-cli-overseas-overseas/releases/latest/download/rgg-linux"
+            download_url = "https://github.com/RollingGo-AI/oauth-hotel-cli-overseas/releases/latest/download/rgg-linux"
             
     success = download_binary(download_url, dest_path)
     
     if not success and assets and system == "windows":
         # Extra fallback for windows naming differences (win vs windows)
         print("Retrying with alternative Windows asset name...")
-        download_url = "https://github.com/RollingGo-AI/oauth-hotel-cli-overseas-overseas/releases/latest/download/rgg-windows.exe"
+        download_url = "https://github.com/RollingGo-AI/oauth-hotel-cli-overseas/releases/latest/download/rgg-windows.exe"
         success = download_binary(download_url, dest_path)
         
     if success:
@@ -180,7 +180,7 @@ def main():
         return 0
     else:
         print("\n❌ Installation failed. Please check your internet connection or install manually from:")
-        print("https://github.com/RollingGo-AI/oauth-hotel-cli-overseas-overseas/releases/latest")
+        print("https://github.com/RollingGo-AI/oauth-hotel-cli-overseas/releases/latest")
         return 1
 
 if __name__ == "__main__":

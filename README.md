@@ -72,16 +72,16 @@ RollingGo酒店预订Skill就能帮你全程搞定：
 
 ```bash
 # 交互式安装 (推荐，可从菜单中自由勾选不同能力模块)
-npx skills add https://github.com/RollingGo-AI/hotel-skill-overseas-overseas
+npx skills add https://github.com/RollingGo-AI/hotel-skill-overseas
 
 # 或直接定向安装特定核心模块 (跳过交互选单)
-npx skills add https://github.com/RollingGo-AI/hotel-skill-overseas-overseas --skill hotel-core
+npx skills add https://github.com/RollingGo-AI/hotel-skill-overseas --skill hotel-core
 ```
 
 CLI 会自动检测您系统上安装的 Agent。您也可以通过 `--agent` 强制指定目标环境：
 
 ```bash
-npx skills add https://github.com/RollingGo-AI/hotel-skill-overseas-overseas --agent cursor
+npx skills add https://github.com/RollingGo-AI/hotel-skill-overseas --agent cursor
 ```
 
 ### 手动克隆/复制
@@ -552,16 +552,16 @@ Works with Cursor, Claude Code, Codex, Windsurf, Copilot, Google Antigravity, an
 
 ```bash
 # Install interactively (Select skills from menu)
-npx skills add https://github.com/RollingGo-AI/hotel-skill-overseas-overseas
+npx skills add https://github.com/RollingGo-AI/hotel-skill-overseas
 
 # Or install a specific skill directly (e.g., hotel-core)
-npx skills add https://github.com/RollingGo-AI/hotel-skill-overseas-overseas --skill hotel-core
+npx skills add https://github.com/RollingGo-AI/hotel-skill-overseas --skill hotel-core
 ```
 
 The CLI auto-detects the installed agent. To target one explicitly, pass `--agent`:
 
 ```bash
-npx skills add https://github.com/RollingGo-AI/hotel-skill-overseas-overseas --agent cursor
+npx skills add https://github.com/RollingGo-AI/hotel-skill-overseas --agent cursor
 ```
 
 ### Clone / copy
