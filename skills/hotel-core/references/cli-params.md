@@ -225,6 +225,5 @@ Query all historical hotel orders for the current user.
 | orderInfoList[].hotelBookingHotel.starRating | string | Star rating |
 | orderInfoList[].hotelContact.firstName | string | Contact first name |
 | orderInfoList[].hotelContact.lastName | string | Contact last name |
-| orderInfoList[].hotelContact.email | string | Contact email |
 | orderInfoList[].hotelRatePlanInfo.roomName | string | Room type name |
 | orderInfoList[].hotelRatePlanInfo.totalPrice | float | Total price |

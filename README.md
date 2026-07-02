@@ -411,7 +411,6 @@ $ rgg orders
       "firstName": "SAN",
       "lastName": "ZHANG",
       "phone": "+86-19189734356",
-      "email": "zhangsan@example.com"
     },
     "hotelGuestList": [
       {
