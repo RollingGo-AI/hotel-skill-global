@@ -199,10 +199,11 @@ rgg search-hotels \
 | Specific street address | 详细地址 |
 
 **Search Result Display Template** (one card per hotel):
+*(CRITICAL: You MUST render the `imageUrl` as an actual image using HTML/Markdown. Do NOT output the raw URL string.)*
 
-```
+```markdown
 🏨 {Hotel Name}
-🖼️ ![{Hotel Name}]({imageUrl})
+<img src="{imageUrl}" alt="{Hotel Name}" width="300" />
 ⭐ {Star Rating} Stars  *(Show if distanceInMeters exists: 📍 {distanceInMeters}m from {Search Location})*
 💰 Reference Price {Currency} {Lowest Price}/night
 🏷️ {Tag 1} · {Tag 2} · {Tag 3}
