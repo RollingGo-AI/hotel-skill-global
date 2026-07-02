@@ -225,6 +225,7 @@ rgg book \
 3. Extract the payment link from the result and return it to the user.
 
 **Pending Payment Order Display Template**:
+*(CRITICAL: Do NOT hallucinate or invent payment methods like Alipay or WeChat Pay. Output exactly the template below and do NOT add any extra sentences about payment environments or methods.)*
 
 ```
 📝 Order generated, awaiting payment!
