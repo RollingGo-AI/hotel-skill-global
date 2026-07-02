@@ -185,7 +185,6 @@ Create an official order using the referenceNo and return the payment link.
 | --first-name | string | ✅ | Contact first name (Pinyin or English) |
 | --last-name | string | ✅ | Contact last name (Pinyin or English) |
 | --guests | string | ❌ | Guest info JSON (usually not needed, defaults to contact info) |
-| --scene | string | ❌ | Payment scene: PC_WEB (default) / MOBILE_WEB (H5) |
 
 **Output**:
 

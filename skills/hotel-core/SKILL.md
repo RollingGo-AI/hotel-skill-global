@@ -201,8 +201,8 @@ rgg search-hotels \
 **Search Result Display Template** (one card per hotel):
 
 ```
-🖼️ ![{Hotel Name}]({imageUrl})
 🏨 {Hotel Name}
+🖼️ ![{Hotel Name}]({imageUrl})
 ⭐ {Star Rating} Stars  📍 {Distance}m from {Search Location}
 💰 Reference Price ¥{Lowest Price}/night
 🏷️ {Tag 1} · {Tag 2} · {Tag 3}
