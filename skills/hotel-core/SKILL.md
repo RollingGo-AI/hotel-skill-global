@@ -1,6 +1,6 @@
 ---
 name: hotel-core
-description: RollingGo Hotel Search & Booking Assistant，Implements the full hotel booking workflow by calling RollingGo hotel APIs。Supported scenarios：① Search hotels by city, attraction, metro, airport, etc. ② Filter by star rating, budget, tags (pool, breakfast, family, pet-friendly) ③ Query real-time room types and prices for specific hotels ④ Compare multiple hotels ⑤ Guide users to complete booking。Triggers：找酒店、订酒店、搜酒店、酒店推荐、酒店查询、附近酒店、五星酒店、民宿、度假村、查房价、看房型、入住、住哪、住宿、rollinggo、旅游住宿、出差住宿、亲子酒店、带泳池的酒店、含早餐酒店。
+description: RollingGo Hotel Search & Booking Assistant. Implements the full hotel booking workflow by calling RollingGo hotel APIs. Supported scenarios: ① Search hotels by city, attraction, metro, airport, etc. ② Filter by star rating, budget, tags (pool, breakfast, family, pet-friendly) ③ Query real-time room types and prices for specific hotels ④ Compare multiple hotels ⑤ Guide users to complete booking. Triggers: Find a hotel, book a hotel, search hotels, hotel recommendation, hotel queries, nearby hotels, five-star hotels, homestays, resorts, check prices, check room types, check-in, where to stay, accommodation, rollinggo, travel accommodation, business trip accommodation, family hotels, hotels with a pool, hotels with breakfast.
 metadata:
   {
     "openclaw": {
@@ -28,280 +28,282 @@ metadata:
   }
 ---
 
-# RollingGo 酒店搜索与预订 Skill
+# RollingGo Hotel Search & Booking Skill
 
-## 安装
+## Installation
 
-如果本地环境未安装 `rgg` 命令，可以通过以下三种方式之一进行安装：
+If the `rgg` command is not installed locally, you can install it using one of the following three methods:
 
-**Method 1：Via npm (Recommended)**
-If Node.js and npm are available, run：
+**Method 1: Via npm (Recommended)**
+If Node.js and npm are available, run:
 ```bash
 npm install -g @rollinggo/hotel-global@latest
 ```
 
-**Method 2：Via Python auto-script (No Node.js needed)**
-如果环境中有 Python，可以直接在 Skill 目录下运行我们提供的自动化安装脚本，它将自动检测您的操作系统并下载最新版的 `rgg` 独立二进制程序到本地 `bin` 文件夹：
+**Method 2: Via Python auto-script (No Node.js needed)**
+If Python is available in the environment, you can directly run our automated installation script from the Skill directory. It will automatically detect your OS and download the latest standalone `rgg` binary to your local `bin` folder:
 ```bash
 python scripts/install.py
 ```
 
-**Method 3：Manual download standalone executable (No Node/Python needed)**
-如果环境中既没有 npm 也没有 Python，请从以下 Release 页面下载对应的单文件程序（Windows: `rgg-win.exe` / `rgg-windows.exe`, Mac: `rgg-macos`, Linux: `rgg-linux`）：
+**Method 3: Manual download standalone executable (No Node/Python needed)**
+If neither npm nor Python is available, please download the corresponding standalone executable from the following Release page (Windows: `rgg-win.exe` / `rgg-windows.exe`, Mac: `rgg-macos`, Linux: `rgg-linux`):
 `https://github.com/RollingGo-AI/oauth-hotel-cli-overseas/releases/latest`
 
-下载后将其重命名为 `rgg`（Windows下为 `rgg.exe`），赋予执行权限，并放入系统环境变量 PATH 或技能目录的 `bin` 文件夹中。
+After downloading, rename it to `rgg` (or `rgg.exe` on Windows), grant execution permissions, and place it in the system PATH or the skill directory's `bin` folder.
 
-**⚠️ 自动升级拦截原则：**
-CLI 工具内置了版本检测。当你在执行任何 `rgg` 命令时，如果控制台输出中出现 `📦 有新版本可用！` 或 `运行以下命令更新` 的提示，**你必须立即暂停当前操作，先使用上述三种方式之一将工具升级到最新版，升级成功后再重新执行刚才中断的命令。** 这样可避免由于服务端接口过期而导致的预订失败。
+**⚠️ Auto-Update Interception Principle:**
+The CLI tool has built-in version detection. When you execute any `rgg` command, if the console output prompts `📦 New version available!` or `Run the following command to update`, **you must immediately pause the current operation, use one of the above three methods to upgrade the tool to the latest version, and then re-execute the interrupted command.** This prevents booking failures due to expired server endpoints.
 
 ---
 
-> ⚠️ **Output Specifications**：
-> 1. **DO NOT show any technical details to users**，包括但不限于：工具名（如 `search-hotels`、`hotel-detail`）、JSON 字段名（如 `hotelId`、`ratePlanId`、`referenceNo`）、命令行内容、技术参数。
-> 2. **ONLY show information users care about**：酒店名称、星级、价格、距离、核心设施、标签、预订链接。
-> 3. **Results MUST be formatted properly**，每家酒店独占一个卡片，关键信息换行分隔，禁止堆砌在一行。
-> 4. **价格说明**：搜索结果中的价格为参考展示价，实际下单价以价格确认为准，展示时注明"参考价"。
-> 5. **登录授权**：用户通过 Agent 对话时看不到终端输出，执行 `rgg login` 后必须从输出中提取授权链接并回复给用户，不要展示二维码文本。
+> ⚠️ **Output Specifications**:
+> 1. **DO NOT show any technical details to users**, including but not limited to: tool names (like `search-hotels`, `hotel-detail`), JSON field names (like `hotelId`, `ratePlanId`, `referenceNo`), command line contents, or technical parameters.
+> 2. **ONLY show information users care about**: Hotel name, star rating, price, distance, core facilities, tags, and booking link.
+> 3. **Results MUST be formatted properly**, with each hotel occupying a separate card. Key information should be separated by line breaks, and stacking them in a single line is prohibited.
+> 4. **Price Description**: Prices in search results are reference prices for display purposes. The actual order price is subject to price confirmation, and it must be labeled as "Reference Price" when displayed.
+> 5. **Login Authorization**: The user cannot see terminal outputs when conversing via the Agent. After executing `rgg login`, you must extract the authorization link from the output and reply to the user with it. Do not display QR code text.
 
 ## When to Use
 
-用户涉及酒店住宿相关的任何意图时均应触发本 Skill，包括但不限于以下场景：
+This Skill should be triggered whenever the user expresses any intent related to hotel accommodations, including but not limited to the following scenarios:
 
-**搜索与发现**：
-- 按地点找酒店："帮我找北京三里屯附近酒店"、"三亚有什么好酒店"、"西湖旁边住宿推荐"
-- 按条件筛选："五星酒店"、"带泳池的酒店"、"含早餐的住宿"、"亲子酒店"、"宠物友好酒店"
-- 按预算筛选："500块以内的酒店"、"经济实惠的住宿"、"豪华酒店推荐"
-- 按品牌筛选："希尔顿"、"万豪"、"亚朵"、"全季"
+**Search and Discover**:
+- Find hotels by location: "Help me find a hotel near Sanlitun, Beijing", "What good hotels are in Sanya", "Accommodation recommendations near West Lake"
+- Filter by conditions: "Five-star hotels", "Hotels with a pool", "Accommodations with breakfast", "Family hotels", "Pet-friendly hotels"
+- Filter by budget: "Hotels under 500 yuan", "Affordable accommodations", "Luxury hotel recommendations"
+- Filter by brand: "Hilton", "Marriott", "Atour", "Ji Hotel"
 
-**查询与对比**：
-- 查房价："杭州酒店多少钱一晚"、"这个酒店什么价格"
-- 看房型："有什么房型"、"大床房有没有"、"家庭房推荐"
-- 比较住宿："帮我对比一下这两家酒店"、"哪个更划算"
-- 了解设施："有没有泳池"、"离地铁站多远"、"停车方便吗"
+**Query and Compare**:
+- Check prices: "How much is a hotel in Hangzhou per night", "What's the price of this hotel"
+- Check room types: "What room types are available", "Are there double rooms", "Family room recommendations"
+- Compare accommodations: "Help me compare these two hotels", "Which one is a better deal"
+- Check facilities: "Is there a pool", "How far is the metro station", "Is parking convenient"
 
-**预订与订单**：
-- 预订酒店："帮我订这家酒店"、"我要下单"、"预订一间房"
-- Query Orders："我的订单"、"之前订的酒店"、"订单状态"
+**Booking and Orders**:
+- Book a hotel: "Help me book this hotel", "I want to place an order", "Book a room"
+- Query Orders: "My orders", "Previously booked hotels", "Order status"
 
-**Triggers覆盖**：
-找酒店、订酒店、搜酒店、酒店推荐、酒店查询、附近酒店、五星酒店、民宿、度假村、查房价、看房型、入住、住哪、住宿、出差住宿、旅游住宿、亲子酒店、带泳池的酒店、含早餐酒店、商务酒店、情侣酒店、温泉酒店、海景房、江景房。
+**Trigger Coverage**:
+Find a hotel, book a hotel, search hotels, hotel recommendations, hotel queries, nearby hotels, five-star hotels, homestays, resorts, check prices, check room types, check-in, where to stay, accommodation, business trip accommodation, travel accommodation, family hotels, hotels with a pool, hotels with breakfast, business hotels, couple hotels, hot spring hotels, sea view rooms, river view rooms.
 
 ## When NOT to Use
 
-- 用户询问机票、火车票、租车、景点门票等非住宿类旅行需求
-- 用户只是闲聊旅游目的地，没有明确住宿意图
-- 用户已明确表示"不用订"、"只是问问"
+- When the user asks about flights, train tickets, car rentals, attraction tickets, or other non-accommodation travel needs.
+- When the user is just chatting about travel destinations without clear accommodation intent.
+- When the user explicitly states "No need to book" or "Just asking".
 
 ---
 
 ## Security Gates
 
-> ⚠️ 酒店预订是**真实消费操作**：
+> ⚠️ Hotel booking is an **actual consumption operation**:
 
-1. **强制两步确认**：先展示房型和价格，等用户明确选择房型并确认后才进行价格锁定和下单。
-2. **信息完整性**：下单前必须确认入住人姓名、邮箱（电话号码将通过 OAuth 默认获取，无需让用户填写参数）。
-3. **价格确认时效**：`referenceNo` 有效期约 15-30 分钟，过期需重新调用价格确认。
+1. **Mandatory Two-Step Confirmation**: First display room types and prices, wait for the user to explicitly select a room type and confirm, and only then proceed to lock the price and place the order.
+2. **Information Completeness**: Before placing an order, you must confirm the guest's name (phone numbers and other details will be obtained by default via OAuth, no need for the user to provide them).
+3. **Price Confirmation Validity**: The `referenceNo` is valid for about 15-30 minutes; if it expires, price confirmation must be re-called.
 
 ---
 
 ## Workflow
 
-**Step 0：Login Auth Check**（首次使用或 Token 失效时执行）
+**Step 0: Login Auth Check** (Executed on first use or when Token expires)
 
-1. 执行 `rgg whoami` 检查登录状态：
-   - **输出 `✅ Logged in`** → 直接进入 Step 1
-   - **输出 `❌ Not logged in`** → 执行 `rgg login`，进入授权流程
+1. Run `rgg whoami` to check login status:
+   - **Outputs `✅ Logged in`** → Proceed directly to Step 1
+   - **Outputs `❌ Not logged in`** → Run `rgg login` and enter the authorization flow
 
-2. 授权流程（⚠️ 重要：用户通过 Agent 对话时看不到终端，必须将授权信息回复给用户）：
+2. Authorization Flow (⚠️ Important: The user cannot see the terminal when talking via the Agent. You MUST reply to the user with the authorization info):
 
-   执行 `rgg login` 后，终端会输出二维码和授权链接。**Agent 必须：**
-   - 从 CLI 输出中提取授权链接（`https://rollinggo.store/s/xxx` 格式）
-   - 将链接以可点击的形式回复给用户
-   - 告知用户："请点击链接完成授权，授权成功后请告诉我"
+   After running `rgg login`, the terminal will output a QR code and an authorization link. **The Agent MUST:**
+   - Extract the authorization link (format: `https://rollinggo.store/s/xxx`) from the CLI output.
+   - Reply to the user with a clickable link.
+   - Inform the user: "Please click the link to complete authorization, and let me know once successful."
 
-   **回复模板**：
+   **Reply Template**:
    ```
-   请点击以下链接完成授权：
-   [点击授权](https://rollinggo.store/s/xxx)
+   Please click the link below to authorize:
+   [Click to Authorize](https://rollinggo.store/s/xxx)
 
-   授权成功后请告诉我，我将继续为您预订。
+   Please tell me once authorization is successful, and I will continue booking for you.
    ```
 
-   如果平台支持图片，也可以生成二维码图片发送，方便手机用户扫码。
+   If the platform supports images, you may also generate a QR code image to send, making it easier for mobile users to scan.
 
-   用户确认授权成功后，CLI 会自动获取 Token，进入 Step 1。
+   Once the user confirms successful authorization, the CLI automatically retrieves the Token, then proceed to Step 1.
 
-**Step 1：Information Collection**（静默判断，不打断用户）
+**Step 1: Information Collection** (Silent judgment, do not interrupt user)
 
-从对话中提取以下信息，能推断的直接用，缺关键信息再追问：
+Extract the following info from the conversation. Use what is given directly; only ask follow-up questions if crucial info is missing:
 
-| 信息 | 是否必须 | 默认值 |
+| Information | Required | Default |
 |------|---------|--------|
-| 目的地（城市/景点/地址） | ✅ 必须 | 无，需追问 |
-| 入住日期 | 建议有 | 明天 |
-| 入住晚数 | 建议有 | 1 晚 |
-| 成人数 | 可选 | 2 人 |
-| 星级偏好 | 可选 | 不限 |
-| 预算上限 | 可选 | 不限 |
-| 特殊需求（标签） | 可选 | 无 |
+| Destination (City/Attraction/Address) | ✅ Mandatory | None, must ask |
+| Check-in Date | Recommended | Tomorrow |
+| Stay Nights | Recommended | 1 night |
+| Adult Count | Optional | 2 people |
+| Star Rating Preference | Optional | Any |
+| Budget Limit | Optional | Any |
+| Special Requests (Tags) | Optional | None |
 
-目的地是唯一必须确认的信息。其他信息缺失时使用默认值，不要逐一追问。
+Destination is the only mandatory info that must be confirmed. If other info is missing, use defaults; do not interrogate the user step-by-step.
 
-**Step 2：Get Tag Dictionary**（按需执行）
+**Step 2: Get Tag Dictionary** (Execute as needed)
 
-用户提到特定设施或特色（如"带泳池"、"含早餐"、"亲子"、"宠物"）时，先执行：
+When a user mentions specific facilities or features (e.g., "with pool", "with breakfast", "family", "pet"), first execute:
 
 ```bash
 rgg hotel-tags
 ```
 
-从返回结果中找到精确的标签名称，再用于搜索。常见对应关系：
+Find the exact tag names from the returned results before using them in the search. Common mappings:
 
-| 用户说法 | 常见标签名 |
+| User Expression | Common Tag Name |
 |---------|-----------|
-| 带泳池、有游泳池 | 户外泳池 / 室内恒温泳池 |
-| 含早餐、有早餐 | 含早餐 |
-| 亲子、带孩子 | 亲子友好 |
-| 宠物友好 | 宠物友好 |
-| 免费停车 | 免费停车场 |
-| 不要某类型 | 对应标签 |
-| 必须有某设施 | 对应标签（硬过滤） |
+| with pool, swimming pool | Outdoor Pool / Indoor Heated Pool |
+| with breakfast, includes breakfast | Breakfast Included |
+| family, with kids | Family Friendly |
+| pet-friendly | Pet Friendly |
+| free parking | Free Parking |
+| Do NOT want X | Corresponding Tag |
+| MUST have X | Corresponding Tag (Hard filter) |
 
-**Step 3：Search Hotels**
+**Step 3: Search Hotels**
 
-调用 `rgg search-hotels`，将用户需求转化为命令行参数：
+Call `rgg search-hotels` to convert user requirements into command line parameters:
 
 ```bash
 rgg search-hotels \
-  --origin-query "<用户原始表达>" \
-  --place "<地点名称>" \
-  --place-type "<类型>" \
+  --origin-query "<User Original Query>" \
+  --place "<Location Name>" \
+  --place-type "<Type>" \
   [--check-in-date YYYY-MM-DD] [--stay-nights N] \
   [--star-ratings min,max] \
-  [--preferred-tag "标签名"] [--required-tag "标签名"] \
+  [--preferred-brand "Brand Name"] \
+  [--required-tag "Tag Name"] \
   [--max-price-per-night N] \
   --size 5
 ```
 
-**placeType 选择规则**（必须精确匹配）：
+**placeType Selection Rules** (must match exactly):
 
-| 用户描述 | --place-type |
+| User Description | --place-type |
 |---------|-------------|
-| 城市名（北京、三亚、曼谷） | 城市 |
-| 机场（首都机场、浦东机场） | 机场 |
-| 景点/地标（外滩、西湖、迪士尼） | 景点 |
-| 火车站（虹桥站、北京南站） | 火车站 |
-| 地铁站 | 地铁站 |
-| 酒店名称 | 酒店 |
-| 区/县/商圈（亚龙湾、朝阳区） | 区/县 |
-| 具体街道地址 | 详细地址 |
+| City name (Beijing, Sanya, Bangkok) | 城市 |
+| Airport (Capital Airport, Pudong) | 机场 |
+| Attraction (Disney, Universal Studios) | 景点 |
+| Train station (Hongqiao Station, Beijing South Station) | 火车站 |
+| Metro station | 地铁站 |
+| Hotel name | 酒店 |
+| District/County/Business Area (Yalong Bay, Chaoyang District) | 区/县 |
+| Specific street address | 详细地址 |
 
-**搜索结果展示模板**（每家酒店一个卡片）：
+**Search Result Display Template** (one card per hotel):
 
 ```
-🏨 {酒店名称}
-⭐ {星级}星  📍 距{搜索地点}{距离}米
-💰 参考价 ¥{最低价}/晚
-🏷️ {标签1} · {标签2} · {标签3}
-🔗 [查看详情 & 预订]({bookingUrl})
+🖼️ ![{Hotel Name}]({imageUrl})
+🏨 {Hotel Name}
+⭐ {Star Rating} Stars  📍 {Distance}m from {Search Location}
+💰 Reference Price ¥{Lowest Price}/night
+🏷️ {Tag 1} · {Tag 2} · {Tag 3}
+🔗 [View Details & Book]({bookingUrl})
 ```
 
-返回 3-5 家酒店后，询问用户："想了解哪家的详细房型和价格？"
+After returning 3-5 hotels, ask the user: "Which hotel's detailed room types and prices would you like to know?"
 
-**Step 4：Query Room Types & Real-time Prices**（用户选定酒店后）
+**Step 4: Query Room Types & Real-time Prices** (After user selects a hotel)
 
-从搜索结果中提取 `hotelId`，调用：
+Extract the `hotelId` from the search results and call:
 
 ```bash
 rgg hotel-detail \
   --hotel-id <hotelId> \
-  --check-in-date <入住日期> \
-  --check-out-date <离店日期> \
-  --adult-count <成人数> \
-  --room-count <房间数>
+  --check-in-date <Check-in Date> \
+  --check-out-date <Check-out Date> \
+  --adult-count <Adult Count> \
+  --room-count <Room Count>
 ```
 
-**房型展示模板**（每个房型一条）：
+**Room Type Display Template** (one entry per room type):
 
 ```
-🛏️ {房型中文名}（{床型描述}）
-💰 总价 ¥{totalPrice}（¥{均价}/晚）  剩余 {inventoryCount} 间
-📋 取消政策：{取消政策描述}
+🛏️ {Room Type Name} ({Bed Type Description})
+💰 Total Price ¥{totalPrice} (¥{Average Price}/night)  {inventoryCount} rooms left
+📋 Cancellation Policy: {Cancellation Policy Description}
 ```
 
-展示 3-5 个推荐房型后，提供预订链接：
-"如需预订，可点击 [前往预订页]({bookingUrl}) 完成下单。"
+After displaying 3-5 recommended room types, provide a booking link:
+"If you want to book, click [Go to Booking Page]({bookingUrl}) to complete the order."
 
-**Step 5：Price Confirmation & Booking**（用户选定房型后）
+**Step 5: Price Confirmation & Booking** (After user selects a room type)
 
-1. 调用 `rgg price-confirm` 锁定价格（获取 `referenceNo`）。注意参数是 `--rooms` 和 `--adults`：
+1. Call `rgg price-confirm` to lock the price (get `referenceNo`). Note the parameters are `--rooms` and `--adults`:
 
 ```bash
 rgg price-confirm \
   --hotel-id <hotelId> \
   --rate-plan-id <ratePlanId> \
-  --rooms <房间数> \
-  --check-in-date <入住日期> \
-  --check-out-date <离店日期> \
-  --adults <成人数>
+  --rooms <Room Count> \
+  --check-in-date <Check-in Date> \
+  --check-out-date <Check-out Date> \
+  --adults <Adult Count>
 ```
 
-2. 收集联系人信息（姓名拼音、邮箱）后，调用 `rgg book` 创建订单：
+2. After collecting contact info (Pinyin/English name), call `rgg book` to create the order:
 
 ```bash
 rgg book \
-  --reference-no "<上一步获取的referenceNo>" \
-  --first-name "<拼音/英文名>" \
-  --last-name "<拼音/英文姓>" \
-  --email "<邮箱>"
+  --reference-no "<referenceNo from previous step>" \
+  --first-name "<First Name>" \
+  --last-name "<Last Name>"
 ```
 
-3. 从结果中提取 `alipayUrl` 或其他支付链接返回给用户。
+3. Extract the payment link from the result and return it to the user.
 
-**下单成功展示模板**：
+**Pending Payment Order Display Template**:
 
 ```
-🎉 预订成功！
-确认号：**{orderNo}**
-酒店：{酒店名}
-房型：{房型名}
-入住：{入住日期} | 离店：{离店日期}
-总价：¥{价格}
-💳 请在30分钟内完成支付：{支付链接}
+📝 Order generated, awaiting payment!
+Confirmation No: **{orderNo}**
+Hotel: {Hotel Name}
+Room Type: {Room Type Name}
+Check-in: {Check-in Date} | Check-out: {Check-out Date}
+Total Price: ¥{Price}
+📋 Cancellation Policy: {Cancellation Policy Description}
+💳 Please complete payment within 30 minutes: {Payment Link}
 ```
 
-**Step 6：Query Orders**（用户询问时）
+**Step 6: Query Orders** (When user asks)
 
 ```bash
 rgg orders
 ```
 
-展示订单列表时，请清晰提取出：**酒店名、入离日期、订单状态、总价**，如果是待支付状态，附上继续支付的链接。
+When displaying the order list, clearly extract: **Hotel Name, Check-in/out Dates, Order Status, Total Price**. If it's awaiting payment, include the link to continue payment.
 
 ---
 
-## 结果不理想时的降级策略
+## Downgrade Strategy When Results Are Not Ideal (Filter Loosening)
 
-按以下顺序放宽条件重试：
-1. 去掉 `--star-ratings` 限制
-2. 增大搜索范围：加 `--distance-in-meter 10000`
-3. 将 `--required-tag` 改为 `--preferred-tag`
-4. 增加返回数量：`--size 10`
-5. 去掉所有标签限制，只保留地点和日期
-
----
-
-## 关键规则
-
-- **地点和类型要匹配**："上海外滩"配 `景点`，不是 `城市`；"北京"配 `城市`
-- **价格是参考价**：搜索结果的价格不是实时锁定价，展示时注明"参考价"
-- **bookingUrl 直接可用**：返回的预订链接可直接给用户点击跳转
-- **不要暴露 hotelId**：内部 ID 不展示给用户，只用于内部调用
-- **多家对比**：用户要对比时，可同时展示多家的卡片，突出差异点（价格/距离/设施）
+Relax conditions in the following order to retry:
+1. Remove `--star-ratings` limit
+2. Expand search radius: add `--distance-in-meter 10000`
+3. Remove tag filters (`--required-tag`)
+4. Increase return quantity: `--size 10`
+5. Remove all tag limits, leaving only location and dates
 
 ---
 
-## 详细参考文档
+## Key Rules
 
-- [references/cli-params.md](references/cli-params.md) — CLI 命令完整参数规范
+- **Location and Type Must Match**: "Shanghai Bund" matches `景点` (Attraction), not `城市` (City); "Beijing" matches `城市` (City).
+- **Prices Are References**: Search result prices are not real-time locked prices. Label them as "Reference Price".
+- **bookingUrl is Readily Available**: Return the booking link directly for the user to click and navigate.
+- **Do Not Expose hotelId**: Internal IDs are not shown to users, they are strictly for internal calls.
+- **Compare Multiple Hotels**: Display cards for multiple hotels simultaneously when comparing, highlighting differences (price/distance/facilities).
+
+---
+
+## Detailed Reference Documents
+
+- [references/cli-params.md](references/cli-params.md) — Complete CLI command parameters specification

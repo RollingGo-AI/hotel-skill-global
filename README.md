@@ -123,8 +123,8 @@ rgg hotel-detail --hotel-id 12345 --check-in-date 2026-06-20
 # 4. 用户确定房型后，进行锁价预订 (此步为高风险，必须要求用户确认！)
 rgg price-confirm --hotel-id 12345 --rate-plan-id "RP01" --rooms 1 --check-in-date 2026-06-20 --check-out-date 2026-06-21 --adults 2
 
-# 5. 在用户同意上述锁定的价格并提供姓名邮箱后，正式下单：
-rgg book --reference-no "REF9999" --first-name "San" --last-name "Zhang" --email "zhangsan@example.com"
+# 5. 在用户同意上述锁定的价格并提供姓名后，正式下单：
+rgg book --reference-no "REF9999" --first-name "San" --last-name "Zhang"
 ```
 
 
@@ -313,7 +313,7 @@ AI 助手: ✅ 价格与房态已锁定！
 取消政策：2026年6月19日前可取消，超期收取 ¥352 罚金
 ⏰ 锁定有效期：30分钟
 
-确认预订吗？如果确认，请提供入住人的中文姓名拼音（或英文名）以及接收确认邮件的邮箱。
+确认预订吗？如果确认，请提供入住人的中文姓名拼音（或英文名）
 ```
 
 > [!WARNING] 锁定有效期
@@ -324,13 +324,13 @@ AI 助手: ✅ 价格与房态已锁定！
 ### 2.4 确认下单、获取支付链接
 
 ```
-用户：确认，入住人张三（ZHANG SAN），邮箱 zhangsan@example.com
+用户：确认，入住人张三（ZHANG SAN）
 ```
 
 AI 代理调用 `book` 命令生成最终订单并获取支付宝链接：
 
 ```bash
-$ rgg book --reference-no "17815407901" --first-name "SAN" --last-name "ZHANG" --email "zhangsan@example.com"
+$ rgg book --reference-no "17815407901" --first-name "SAN" --last-name "ZHANG"
 ```
 
 命令行输出：
@@ -603,8 +603,8 @@ rgg hotel-detail --hotel-id 12345 --check-in-date 2026-06-20
 # 4. Once user picks a room and rate plan, lock the price (Requires user confirmation!)
 rgg price-confirm --hotel-id 12345 --rate-plan-id "RP01" --rooms 1 --check-in-date 2026-06-20 --check-out-date 2026-06-21 --adults 2
 
-# 5. After the user approves the locked price and provides their Name/Email:
-rgg book --reference-no "REF9999" --first-name "San" --last-name "Zhang" --email "zhangsan@example.com"
+# 5. After the user approves the locked price and provides their Name:
+rgg book --reference-no "REF9999" --first-name "San" --last-name "Zhang"
 ```
 
 ### Risk level
