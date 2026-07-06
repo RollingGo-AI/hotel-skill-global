@@ -551,16 +551,16 @@ Works with Cursor, Claude Code, Codex, Windsurf, Copilot, Google Antigravity, an
 
 ```bash
 # Install interactively (Select skills from menu)
-npx skills add https://github.com/RollingGo-AI/hotel-skill-overseas
+npx skills add https://github.com/RollingGo-AI/hotel-skill-global
 
 # Or install a specific skill directly (e.g., hotel-core)
-npx skills add https://github.com/RollingGo-AI/hotel-skill-overseas --skill hotel-core
+npx skills add https://github.com/RollingGo-AI/hotel-skill-global --skill hotel-core
 ```
 
 The CLI auto-detects the installed agent. To target one explicitly, pass `--agent`:
 
 ```bash
-npx skills add https://github.com/RollingGo-AI/hotel-skill-overseas --agent cursor
+npx skills add https://github.com/RollingGo-AI/hotel-skill-global --agent cursor
 ```
 
 ### Clone / copy
