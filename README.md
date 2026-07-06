@@ -1,7 +1,5 @@
 # RollingGo Hotel Skill
 
-[English](#english) | [简体中文](#简体中文)
-
 ```text
   ██████╗  ██████╗ ██╗     ██╗     ██╗███╗   ██╗ ██████╗  ██████╗  ██████╗ 
   ██╔══██╗██╔═══██╗██║     ██║     ██║████╗  ██║██╔════╝ ██╔════╝ ██╔═══██╗
@@ -29,66 +27,63 @@ Search → Detail → Price Confirm → Book → Orders
 
 ---
 
-只需对 Agent 说一句「我要去 XX 玩，帮我订酒店」
+Just say to your Agent: "I'm traveling to XX, help me book a hotel."
 
-RollingGo酒店预订Skill就能帮你全程搞定：
+The RollingGo Hotel Booking Skill handles the entire process for you:
 
-🔍 按需求**智能筛选**，省心帮你挑酒店
+🔍 **Smart Filtering**: Automatically picks the best hotels based on your needs.
 
-📋 实时查**房型、报价和退改规则**，明明白白不踩坑
+📋 **Real-time Checks**: Live room types, pricing, and cancellation policies—no hidden traps.
 
-🛏️ 心仪房型提前**锁定**，不用愁晚订没房
+🛏️ **Early Lock-in**: Lock your favorite room instantly so you don't miss out.
 
-🔐 无需切换其他平台，Agent内一键安全**登录**，隐私信息有保障
+🔐 **Secure Login**: One-click secure OAuth login directly within the Agent, protecting your privacy.
 
-💳 说句“帮我下单”就跳转支付页面**直接付**
+💳 **Direct Payment**: Just say "place the order" to get a direct payment link.
 
-📑 订单状态随时能查，全程都省心
+📑 **Order Tracking**: Check your order status anytime for complete peace of mind.
 
-💴 还能设置24 小时自动**盯价**，降价马上**提醒**
+💴 **Price Monitoring**: Set up 24-hour automatic price tracking and get instant alerts if prices drop.
 
-全球酒店**实时推荐**及**闭环预订**，不用自己蹲点比价，不用纠结早订亏、晚订无，订酒店的烦心事，一句话帮你全打理妥当。
+**Global Real-time Recommendations & Closed-loop Booking**. No more manual price comparisons or worrying about booking too early or too late. Hand over your hotel booking headaches with just one sentence.
 
+## ✨ Skill Highlights
 
-
-## ✨ Skill亮点
-
-- ✅ **原生智能交互** - Agent-Native原生交互设计，自然对话即可完成预订全流程
-- ✅ **实时库存价确** - 库存直连+实时价格确认能力，信息零延迟，查询结果均可直接预订
-- ✅ **成熟供应链保障** - 全球第三大酒旅B2B官方数据源，14年旅行产品供应链积累，全链路API直连
-- ✅ **海量酒店覆盖** - 坐拥200万+酒店资源，覆盖全球主要目的地
-- ✅ **直签酒店资源** - 11万+直签酒店直连，价格库存实时响应，确保查询结果准确可订
-- ✅ **多元供应体系** - 整合500+全球供应商，涵盖各类酒店品牌，满足不同用户预订需求
-- ✅ **差异化价格优势** - 锚定OTA上游供应，海外酒店及上海、香港、日韩等热门目的地价格优势显著
-- ✅ **兼容性** - 支持 Cursor、Claude Code、Codex、Windsurf、Copilot 等 40 多种主流大模型代理
+- ✅ **Agent-Native Interaction**: Designed natively for Agents, completing the entire booking flow via natural conversation.
+- ✅ **Real-time Inventory & Price Confirmation**: Direct connection to inventory + live price confirmation. Zero-latency information ensures all search results are immediately bookable.
+- ✅ **Mature Supply Chain Guarantee**: Backed by the world's 3rd largest travel B2B official data source, with 14 years of supply chain accumulation and full-link API direct connections.
+- ✅ **Massive Hotel Coverage**: Access to over 2 million hotel resources, covering major global destinations.
+- ✅ **Directly Contracted Resources**: 110,000+ directly contracted hotels with real-time price and inventory response.
+- ✅ **Diverse Supply System**: Integrates 500+ global suppliers covering all types of hotel brands to meet varied booking needs.
+- ✅ **Differentiated Price Advantage**: Anchored to upstream OTA supply, featuring significant price advantages for overseas hotels and popular destinations like Shanghai, Hong Kong, Japan, and Korea.
+- ✅ **Broad Compatibility**: Supports 40+ mainstream AI agents including Cursor, Claude Code, Codex, Windsurf, and Copilot.
 
 <img width="477" height="272" alt="image" src="https://github.com/user-attachments/assets/b8318f4b-4c3a-4980-8032-cc6e3ed2edeb" />
 
-
 ## ✨ Installation
 
-### 通过 npx skills 安装 (推荐)
-自动兼容 Cursor, Claude Code, Windsurf 等 40+ 种代理：
+### Via npx skills (Recommended)
+Automatically compatible with Cursor, Claude Code, Windsurf, and 40+ other agents:
 
 ```bash
-# 交互式安装 (推荐，可从菜单中自由勾选不同能力模块)
+# Interactive installation (Recommended, freely select capability modules from the menu)
 npx skills add https://github.com/RollingGo-AI/hotel-skill-global
 
-# 或直接定向安装特定核心模块 (跳过交互选单)
+# Or directly install a specific core module (Skips interactive menu)
 npx skills add https://github.com/RollingGo-AI/hotel-skill-global --skill hotel-core
 ```
 
-CLI 会自动检测您系统上安装的 Agent。您也可以通过 `--agent` 强制指定目标环境：
+The CLI auto-detects the agent installed on your system. You can also explicitly target an environment via `--agent`:
 
 ```bash
 npx skills add https://github.com/RollingGo-AI/hotel-skill-global --agent cursor
 ```
 
-### 手动克隆/复制
+### Manual Clone/Copy
 
-克隆本仓库，将 `skills/hotel-core/` 文件夹直接放入您 Agent 对应的技能目录即可：
+Clone this repository and drop the `skills/hotel-core/` folder directly into your Agent's respective skills directory:
 
-| 代理工具 | 本地技能存放目录 |
+| Agent | Local Skill Directory |
 |-------|-----------------|
 | Claude Code | `~/.claude/skills/` |
 | Cursor | `~/.cursor/skills/` |
@@ -96,56 +91,55 @@ npx skills add https://github.com/RollingGo-AI/hotel-skill-global --agent cursor
 | Windsurf | `~/.windsurf/skills/` |
 | Google Antigravity | `~/.gemini/antigravity/skills/` |
 
-### 核心能力清单
-| 指令 | 业务描述 |
+### Core Capabilities List
+| Command | Description |
 |-------|-------------|
-| **`rgg login`** | OAuth 2.1 PKCE 免密安全授权 |
-| **`rgg search-hotels`** | 支持按地标、日期、标签多维度检索酒店 |
-| **`rgg hotel-detail`** | 实时拉取酒店房型、最新报价与退改政策 |
-| **`rgg price-confirm`** | 锁定房间价格并生成交易参考号 `referenceNo` |
-| **`rgg book`** | 提交预订入住人信息，返回真实的付款链接 |
-| **`rgg orders`** | 查阅历史订单及最新支付状态 |
+| **`rgg login`** | OAuth 2.1 PKCE passwordless secure authorization |
+| **`rgg search-hotels`** | Multi-dimensional hotel search by landmarks, dates, and tags |
+| **`rgg hotel-detail`** | Fetch live room types, latest quotes, and cancellation policies |
+| **`rgg price-confirm`** | Lock room price and generate transaction `referenceNo` |
+| **`rgg book`** | Submit guest info and return the actual payment link |
+| **`rgg orders`** | View historical orders and latest payment status |
 
-### 大模型操作 SOP (标准作业程序)
-要求 AI 建议或自动执行的规范代码流：
+### LLM Standard Operating Procedure (SOP)
+The canonical workflow sequence that AI should suggest or execute automatically:
 
 ```bash
-# 1. 首先检查用户登录状态
+# 1. First, check the user's login status
 rgg whoami
-# -> 如果Not logged in，引导用户先执行 `rgg login`
+# -> If "Not logged in", prompt the user to run `rgg login` first
 
-# 2. 检索意向酒店（例如：下周的上海酒店）
+# 2. Search for desired hotels (e.g., Shanghai hotels next week)
 rgg search-hotels --place "Shanghai" --check-in-date 2026-06-20
 
-# 3. 将搜索结果用 Markdown 呈现给用户。待用户挑选后，获取详情：
+# 3. Present the search results to the user in Markdown. Once they pick one, fetch details:
 rgg hotel-detail --hotel-id 12345 --check-in-date 2026-06-20
 
-# 4. 用户确定房型后，进行锁价预订 (此步为高风险，必须要求用户确认！)
+# 4. After the user confirms the room type, lock the price (HIGH RISK step, user confirmation mandatory!)
 rgg price-confirm --hotel-id 12345 --rate-plan-id "RP01" --rooms 1 --check-in-date 2026-06-20 --check-out-date 2026-06-21 --adults 2
 
-# 5. 在用户同意上述锁定的价格并提供姓名后，正式下单：
+# 5. After the user approves the locked price and provides their name, place the final order:
 rgg book --reference-no "REF9999" --first-name "San" --last-name "Zhang"
 ```
 
-
 ---
-## ✨ 效果演示
+## ✨ Live Demo
 
-以下展示通过 Claude Code、Cursor 等 AI 代理运行本 Skill 的完整对话和终端命令执行流程。你无需了解任何命令行参数，AI 代理会自动识别你的自然语言意图并调用 `rgg` CLI 命令行工具。
+The following demonstrates the complete dialogue and terminal command execution flow when running this Skill via AI agents like Claude Code or Cursor. You do not need to understand any command-line parameters; the AI agent will automatically recognize your natural language intent and invoke the `rgg` CLI tool.
 
-### 2.1 说需求
+### 2.1 State Requirements
 
 ```
-用户：我下周六（6月20日）要去杭州出差，帮我在杭州找个 5 星级的开元酒店，2 人住 1 晚
+User: I'm going on a business trip to Hangzhou next Saturday (June 20). Help me find a 5-star New Century hotel in Hangzhou for 2 people for 1 night.
 ```
 
-AI 代理在后台执行酒店搜索：
+The AI agent executes the hotel search in the background:
 
 ```bash
-$ rgg search-hotels --origin-query "杭州5星级开元酒店，2人入住1晚" --place "杭州" --place-type "城市" --check-in-date 2026-06-20 --stay-nights 1 --star-ratings 5 --size 3
+$ rgg search-hotels --origin-query "5-star New Century hotel in Hangzhou, 2 people for 1 night" --place "Hangzhou" --place-type "city" --check-in-date 2026-06-20 --stay-nights 1 --star-ratings 5 --size 3
 ```
 
-命令行输出：
+Terminal output:
 ```json
 {
   "success": true,
@@ -153,76 +147,76 @@ $ rgg search-hotels --origin-query "杭州5星级开元酒店，2人入住1晚" 
     {
       "hotelId": 1090005,
       "bookingUrl": "https://rollinggo.cn/xxxx",
-      "name": "杭州富阳东方茂开元名都大酒店",
-      "brand": "德胧",
-      "address": "富春街道金桥北路61号",
+      "name": "Grand New Century Hotel Fuyang",
+      "brand": "Delonix",
+      "address": "No. 61 North Jinqiao Road, Fuchun Street",
       "destinationId": "6084457",
       "latitude": 30.049471,
       "longitude": 119.933616,
       "starRating": 5,
       "price": {
-        "message": "查价成功。最低价格：352，币种：CNY",
+        "message": "Price check successful. Lowest price: 352, Currency: CNY",
         "hasPrice": true,
         "currency": "CNY",
         "lowestPrice": 352
       },
       "areaCode": "CN",
-      "description": "<p><b>酒店简介描述</b><br/>杭州富阳东方茂开元名都大酒店地处富阳区CBD...</p>",
+      "description": "<p><b>Hotel Description</b><br/>Located in the CBD of Fuyang District...</p>",
       "imageUrl": "https://image2-cdn.aigohotel.com/3/Image/1090005/0221d1200084a0cdf79B1_R_550_412.jpg-agh",
-      "hotelAmenities": ["健身室", "室内恒温泳池", "大堂吧", "WIFI"],
-      "tags": ["五星酒店", "健身房", "免费WiFi", "免费停车场"],
+      "hotelAmenities": ["Gym", "Indoor Heated Pool", "Lobby Bar", "WIFI"],
+      "tags": ["5-Star Hotel", "Gym", "Free WiFi", "Free Parking"],
       "nameEn": "Grand New Century Hotel Fuyang"
     }
   ]
 }
 ```
 
-AI 代理将数据格式化，回复给用户：
+The AI agent formats the data and replies:
 
 ```
-AI 助手: 找到以下符合要求的杭州五星级开元酒店：
+AI Assistant: I found the following 5-star New Century hotel in Hangzhou that matches your request:
 
-🏨 杭州富阳东方茂开元名都大酒店
-⭐ 5.0星  📍 位于富阳区CBD，地铁口旁
-💰 参考价 $352/晚
-🏷️ 五星酒店 · 健身房 · 免费WiFi · 免费停车场
-🔗 [查看详情 & 预订](https://rollinggo.cn/xxxx)
+🏨 Grand New Century Hotel Fuyang
+⭐ 5.0 Stars  📍 Located in Fuyang CBD, next to the subway station
+💰 Reference Price: $352/night (CNY)
+🏷️ 5-Star Hotel · Gym · Free WiFi · Free Parking
+🔗 [View Details & Book](https://rollinggo.cn/xxxx)
 
-你想了解该酒店的详细房型和报价吗？
+Would you like to see detailed room types and pricing for this hotel?
 ```
 
 ---
 
-### 2.2 选酒店、看房型
+### 2.2 Select Hotel, View Room Types
 
 ```
-用户：好的，帮我看看这家酒店有什么房型
+User: Yes, let's see what room types are available here.
 ```
 
-AI 代理自动调用接口获取该酒店的实时房型及价格列表：
+The AI agent automatically calls the API to fetch live room types and prices:
 
 ```bash
 $ rgg hotel-detail --hotel-id 1090005 --check-in-date 2026-06-20 --check-out-date 2026-06-21 --room-count 1 --adult-count 2
 ```
 
-命令行输出：
+Terminal output:
 ```json
 {
   "success": true,
   "hotelId": 1090005,
   "bookingUrl": "https://rollinggo.cn/xxxx",
-  "name": "杭州富阳东方茂开元名都大酒店",
+  "name": "Grand New Century Hotel Fuyang",
   "checkIn": "2026-06-20",
   "checkOut": "2026-06-21",
   "roomRatePlans": [
     {
       "roomTypeId": 22724870,
-      "roomName": "普通双床房",
+      "roomName": "Standard Twin Room",
       "roomNameCn": "普通双床房",
       "ratePlanId": "6sQgUxvnJoG-bzLZRIVAeUw",
-      "ratePlanName": "普通双床房",
+      "ratePlanName": "Standard Twin Room",
       "bedType": 5,
-      "bedTypeDescription": "2 单人床",
+      "bedTypeDescription": "2 Single Beds",
       "currency": "CNY",
       "totalPrice": 352,
       "isOnRequest": false,
@@ -234,38 +228,38 @@ $ rgg hotel-detail --hotel-id 1090005 --check-in-date 2026-06-20 --check-out-dat
       ]
     }
   ],
-  "message": "搜索成功",
+  "message": "Search successful",
   "nameEn": "Grand New Century Hotel Fuyang"
 }
 ```
 
-AI 代理格式化呈现给用户：
+The AI agent presents the formatted details:
 
 ```
-AI 助手: 杭州富阳东方茂开元名都大酒店房型明细如下：
+AI Assistant: Here are the room details for the Grand New Century Hotel Fuyang:
 
-🛏️ 普通双床房（2 单人床）
-💰 总价 $352（$352/晚）  剩余充足
-📋 取消政策：2026年6月19日前取消收取全额房费罚金（不可免费取消）
+🛏️ Standard Twin Room (2 Single Beds)
+💰 Total Price: $352 (CNY) ($352/night)  Availability: Ample
+📋 Cancellation Policy: Cancellations after June 19, 2026, incur a full-amount penalty (No free cancellation).
 
-如需预订此房型，请告诉我。
+Let me know if you would like to book this room type.
 ```
 
 ---
 
-### 2.3 确认房型、锁价
+### 2.3 Confirm Room Type & Lock Price
 
 ```
-用户：那就订普通双床房吧
+User: Let's book the Standard Twin Room.
 ```
 
-AI 代理在后台调用 `price-confirm` 命令锁价，确认实时报价并获取交易参考号：
+The AI agent calls the `price-confirm` command in the background to lock the price and get the transaction reference number:
 
 ```bash
 $ rgg price-confirm --hotel-id 1090005 --rate-plan-id "6sQgUxvnJoG-bzLZRIVAeUw" --rooms 1 --check-in-date 2026-06-20 --check-out-date 2026-06-21 --adults 2
 ```
 
-命令行输出：
+Terminal output:
 ```json
 {
   "success": true,
@@ -276,12 +270,12 @@ $ rgg price-confirm --hotel-id 1090005 --rate-plan-id "6sQgUxvnJoG-bzLZRIVAeUw" 
     "checkOutDate": "2026-06-21 00:00:00",
     "hotelList": [
       {
-        "hotelName": "杭州富阳东方茂开元名都大酒店(Grand New Century Hotel Fuyang)",
+        "hotelName": "Grand New Century Hotel Fuyang",
         "totalPrice": 352,
         "referenceTotalPrice": 402,
         "ratePlanList": [
           {
-            "roomName": "普通双床房",
+            "roomName": "Standard Twin Room",
             "bedType": 52,
             "currency": "CNY",
             "totalPrice": 352,
@@ -301,39 +295,39 @@ $ rgg price-confirm --hotel-id 1090005 --rate-plan-id "6sQgUxvnJoG-bzLZRIVAeUw" 
 }
 ```
 
-AI 代理向用户进行二次确认（Security Gates机制）：
+The AI agent prompts the user for secondary confirmation (Security Gates mechanism):
 
 ```
-AI 助手: ✅ 价格与房态已锁定！
+AI Assistant: ✅ Price and room availability have been locked!
 
-酒店：杭州富阳东方茂开元名都大酒店
-房型：普通双床房
-日期：2026-06-20 → 2026-06-21（1 晚）
-总价：$352（含税费）
-取消政策：2026年6月19日前可取消，超期收取 $352 罚金
-⏰ 锁定有效期：30分钟
+Hotel: Grand New Century Hotel Fuyang
+Room: Standard Twin Room
+Dates: 2026-06-20 → 2026-06-21 (1 Night)
+Total Price: $352 CNY (Taxes included)
+Cancellation Policy: Free cancellation before June 19, 2026. After this date, a penalty of $352 applies.
+⏰ Lock Validity: 30 minutes
 
-确认预订吗？如果确认，请提供入住人的中文姓名拼音（或英文名）
+Do you confirm this booking? If yes, please provide the guest's name (First Name and Last Name in Pinyin or English).
 ```
 
-> [!WARNING] 锁定有效期
-> 价格锁定有效期约 30 分钟。若用户犹豫时间过长，下单前 AI 代理会再次触发价格锁定以防失效。
+> [!WARNING] Lock Validity
+> The price lock is valid for about 30 minutes. If the user hesitates for too long, the AI agent will automatically trigger the price lock again before finalizing the order to prevent timeout failures.
 
 ---
 
-### 2.4 确认下单、获取支付链接
+### 2.4 Finalize Order & Get Payment Link
 
 ```
-用户：确认，入住人张三（ZHANG SAN）
+User: Confirmed, guest is ZHANG SAN.
 ```
 
-AI 代理调用 `book` 命令生成最终订单并获取支付链接：
+The AI agent invokes the `book` command to generate the final order and retrieve the payment link:
 
 ```bash
 $ rgg book --reference-no "17815407901" --first-name "SAN" --last-name "ZHANG"
 ```
 
-命令行输出：
+Terminal output:
 ```json
 {
   "success": true,
@@ -345,38 +339,38 @@ $ rgg book --reference-no "17815407901" --first-name "SAN" --last-name "ZHANG"
 }
 ```
 
-AI 代理提供支付卡片：
+The AI agent presents the payment card:
 
 ```
-AI 助手: 🎉 预订成功，订单已创建！
+AI Assistant: 🎉 Booking successful! Your order has been created.
 
-确认号：**H178168930177922821**
-酒店：杭州富阳东方茂开元名都大酒店
-房型：普通双床房
-入住：2026-06-20 | 离店：2026-06-21
-总价：$352
+Confirmation No: **H178168930177922821**
+Hotel: Grand New Century Hotel Fuyang
+Room: Standard Twin Room
+Check-in: 2026-06-20 | Check-out: 2026-06-21
+Total Price: $352 CNY
 
-💳 请在30分钟内点击以下链接完成支付：
-[点击前往完成支付](https://rollinggo.cn/xxxx)
+💳 Please click the link below to complete your payment within 30 minutes:
+[Click Here to Complete Payment](https://rollinggo.cn/xxxx)
 
-支付完成后，您可以随时对我说“查看我的订单”进行状态核对。
+Once paid, you can say "check my orders" to verify the status at any time.
 ```
 
 ---
 
-### 2.5 查订单
+### 2.5 Check Orders
 
 ```
-用户：我的订单
+User: My orders
 ```
 
-AI 代理查询该账户的所有订单列表：
+The AI agent queries the account's order list:
 
 ```bash
 $ rgg orders
 ```
 
-命令行输出：
+Terminal output:
 ```json
 [
   {
@@ -390,7 +384,7 @@ $ rgg orders
       "totalPrice": 352,
       "mainOrderNo": "M17816893017792282",
       "subOrderNo": "H178168930177922821",
-      "language": "zh_CN",
+      "language": "en",
       "channel": "AI_LAB",
       "partner": "rollinggo",
       "priceConfirmTime": "2026-06-17T17:41:28.000"
@@ -398,7 +392,7 @@ $ rgg orders
     "hotelBookingHotel": {
       "hotelId": 1090005,
       "hotelName": "Grand New Century Hotel Fuyang",
-      "hotelAddress": "富春街道金桥北路61号",
+      "hotelAddress": "No. 61 North Jinqiao Road, Fuchun Street",
       "hotelPhone": "0571-63287888",
       "starRating": "5.0",
       "image": "https://image2-cdn.aigohotel.com/...",
@@ -410,7 +404,7 @@ $ rgg orders
     "hotelContact": {
       "firstName": "SAN",
       "lastName": "ZHANG",
-      "phone": "+86-19189734356",
+      "phone": "+86-19189734356"
     },
     "hotelGuestList": [
       {
@@ -426,10 +420,9 @@ $ rgg orders
       "adultCount": 2,
       "childCount": 0,
       "roomTypeId": 22724870,
-      "roomName": "普通双床房",
-      "roomNameCn": "普通双床房",
+      "roomName": "Standard Twin Room",
       "ratePlanId": "6sQgUxvnJoG-bzLZRIVAeUw",
-      "ratePlanName": "普通双床房",
+      "ratePlanName": "Standard Twin Room",
       "bedType": 5,
       "currency": "CNY",
       "totalPrice": 352,
@@ -457,78 +450,80 @@ $ rgg orders
 ]
 ```
 
-AI 代理回复：
+The AI agent replies:
 
 ```
-AI 助手: 您当前有 1 笔进行中的酒店订单：
+AI Assistant: You currently have 1 active hotel order:
 
-🏨 Grand New Century Hotel Fuyang (杭州富阳东方茂开元名都大酒店)
-🛏️ 普通双床房 · 1间房 · 1晚
-📅 入住日期：2026-06-20 至 2026-06-21
-👤 入住人：ZHANG SAN
-💰 总价：$352
-状态：已创建/待支付（Status: 3）
+🏨 Grand New Century Hotel Fuyang
+🛏️ Standard Twin Room · 1 Room · 1 Night
+📅 Check-in: 2026-06-20 to 2026-06-21
+👤 Guest: ZHANG SAN
+💰 Total: $352 CNY
+Status: Created / Pending Payment (Status: 3)
 
-如果需要支付，可以点击此前的支付链接；若要了解退改详情，请告诉我。
+If you need to pay, you can click the previous payment link. If you need details on cancellations, please let me know.
 ```
 
 ---
 
-### 2.6 完整对话链路
+### 2.6 Full Sequence Diagram
 
 ```mermaid
 sequenceDiagram
-    participant U as 用户
-    participant C as Claude
-    participant M as Skill
+    participant U as User
+    participant C as AI Agent
+    participant M as Skill CLI
 
-    U->>C: 找杭州酒店
+    U->>C: Find hotels in Hangzhou
     C->>M: rgg search-hotels
-    M-->>C: 返回 hotelInformationList (JSON)
-    C-->>U: 格式化推荐列表
+    M-->>C: Returns hotelInformationList (JSON)
+    C-->>U: Formats and recommends hotels
 
-    U->>C: 查看开元名都房型
+    U->>C: View rooms for New Century Hotel
     C->>M: rgg hotel-detail
-    M-->>C: 返回 roomRatePlans 列表 (JSON)
-    C-->>U: 格式化展示房型
+    M-->>C: Returns roomRatePlans (JSON)
+    C-->>U: Formats and displays room types
 
-    U->>C: 预订普通双床房
+    U->>C: Book Standard Twin Room
     C->>M: rgg price-confirm
-    M-->>C: 锁定价格并返回 priceDetailsInfo.referenceNo
-    C-->>U: 提示价格已锁定并索要联系人
+    M-->>C: Locks price & returns priceDetailsInfo.referenceNo
+    C-->>U: Confirms price lock and requests guest info
 
-    U->>C: 提供联系人信息确认预订
+    U->>C: Provides guest info and confirms
     C->>M: rgg book
-    M-->>C: 创建订单并返回 bookingResult.paymentUrl
-    C-->>U: 提示创建成功，输出支付卡片
+    M-->>C: Creates order & returns bookingResult.paymentUrl
+    C-->>U: Order created, outputs payment card
 
-    U->>C: 查看我的订单
+    U->>C: Check my orders
     C->>M: rgg orders
-    M-->>C: 返回当前订单状态列表 (JSON)
-    C-->>U: 格式化反馈订单状态
+    M-->>C: Returns current order status list (JSON)
+    C-->>U: Formats and outputs order status
 ```
 
 ---
 
-### 风险等级
-**中等风险 (MODERATE)** — 此技能可触发真实的现实世界酒店客房交易。已通过严格的两步确认机制拦截未经授权的 `book` 调用。
-为 **RollingGo 酒店命令行工具** (`@rollinggo/hotel-global`) 量身定制的官方 AI 技能库。它能够教会各类 AI 代理正确的酒店预订流程、OAuth 2.1 PKCE 登录流，以及如何安全地在终端内触发真实的酒店交易。兼容 [skills CLI](https://github.com/vercel-labs/skills) 规范.给 AI 代理的提示：当用户要求**预订酒店**、**查询空房**或**查看订单**时，请按顺序使用 `rgg` 命令。绝对不要向用户泄露原始的 `hotelId` 或 `referenceNo` 等系统内部 ID，请将结果格式化为美观的 Markdown 卡片。
+### Risk Level
+**MODERATE** — Can trigger real-world hotel reservations. The skill enforces a strict two-step confirmation gate before making any `book` calls.
 
-> **安全警告**：本工具直接连接真实交易系统。技能库已向 AI 代理下达严格的“死命令”：**在未经用户明确确认价格和支付意愿前，绝不允许私自发起任何订单**。
+Official AI skills specifically tailored for the **RollingGo Hotel CLI** (`@rollinggo/hotel-global`). It teaches various AI agents the correct hotel booking workflow, OAuth 2.1 PKCE login flow, and how to safely trigger real-world hotel transactions directly from the terminal. Compatible with the [skills CLI](https://github.com/vercel-labs/skills) spec.
 
+Prompt for AI Agents: When the user asks to **book a hotel**, **check availability**, or **view orders**, use the `rgg` commands in sequence. Never leak raw internal system IDs like `hotelId` or `referenceNo` to the user; format results into beautiful Markdown cards.
+
+> **Security Warning**: This tool connects directly to real-world transaction systems. The skill library enforces a strict "hard rule" on AI agents: **Under no circumstances is an order to be initiated without explicit user confirmation of the price and intent to pay.**
 
 ---
 
-## Structure / 代码架构
+## Structure / Architecture
 ```text
 RollingGo-Skills/
-  ├── README.md               # Main orchestrator and SEO entry / 主入口与 SEO 文案
-  ├── AGENTS.md               # Directives for AI web crawlers / 针对 AI 爬虫的全局指令
+  ├── README.md               # Main orchestrator and SEO entry
+  ├── AGENTS.md               # Directives for AI web crawlers
   ├── .github/
   │    └── copilot-instructions.md
   └── skills/
-       ├── llms.txt           # AI Index for search engines / 大模型全局搜索索引
-       └── hotel-core/        # Core hotel booking skill / 核心酒店预订功能包
+       ├── llms.txt           # AI Index for search engines
+       └── hotel-core/        # Core hotel booking skill
             ├── SKILL.md
             └── references/
                  └── cli-params.md
@@ -536,78 +531,3 @@ RollingGo-Skills/
 
 ## License
 MIT
-
-
-## English
-
-Official AI skills for the **RollingGo Hotel CLI** (`@rollinggo/hotel-global`). They teach agents the correct booking sequence, OAuth 2.1 PKCE login flow, and how to safely trigger end-to-end hotel transactions from the terminal. Works with the [skills CLI](https://github.com/vercel-labs/skills) (Cursor, Claude Code, Codex, Windsurf, Copilot, 40+ agents).
-
-> **Important**: This CLI acts as a bridge to real-world bookings. AI agents are strictly instructed to **NEVER place an order without explicit price confirmation from the user**.
-
-**For AI agents:** When the user asks to **book a hotel**, **search for rooms**, or **check their orders**, use the `rgg` CLI commands sequentially. Never leak `hotelId` or `referenceNo` directly to the user; format results into user-friendly Markdown.
-
-### npx skills (recommended)
-Works with Cursor, Claude Code, Codex, Windsurf, Copilot, Google Antigravity, and 40+ agents:
-
-```bash
-# Install interactively (Select skills from menu)
-npx skills add https://github.com/RollingGo-AI/hotel-skill-global
-
-# Or install a specific skill directly (e.g., hotel-core)
-npx skills add https://github.com/RollingGo-AI/hotel-skill-global --skill hotel-core
-```
-
-The CLI auto-detects the installed agent. To target one explicitly, pass `--agent`:
-
-```bash
-npx skills add https://github.com/RollingGo-AI/hotel-skill-global --agent cursor
-```
-
-### Clone / copy
-
-Clone this repo and copy the `skills/hotel-core/` folder into the appropriate directory for your agent:
-
-| Agent | Skill Directory |
-|-------|-----------------|
-| Claude Code | `~/.claude/skills/` |
-| Cursor | `~/.cursor/skills/` |
-| OpenAI Codex | `~/.codex/skills/` |
-| Windsurf | `~/.windsurf/skills/` |
-| Google Antigravity | `~/.gemini/antigravity/skills/` |
-
-### Capabilities
-| Command | Description |
-|-------|-------------|
-| **`rgg login`** | OAuth 2.1 PKCE Authorization |
-| **`rgg search-hotels`** | Search hotels by location, dates, tags |
-| **`rgg hotel-detail`** | View room types, live prices, cancellation policies |
-| **`rgg price-confirm`** | Lock a price and generate a booking `referenceNo` |
-| **`rgg book`** | Finalize order with guest info, returns payment link |
-| **`rgg orders`** | View historical orders and their payment status |
-
-### Quick reference (for AI agents)
-Canonical order sequence to suggest or generate:
-
-```bash
-# 1. Start with checking login status
-rgg whoami
-# -> If not logged in, prompt user to run `rgg login`
-
-# 2. Search for hotels (e.g. Shanghai next week)
-rgg search-hotels --place "Shanghai" --check-in-date 2026-06-20
-
-# 3. Present options to user and get their choice. Then fetch details:
-rgg hotel-detail --hotel-id 12345 --check-in-date 2026-06-20
-
-# 4. Once user picks a room and rate plan, lock the price (Requires user confirmation!)
-rgg price-confirm --hotel-id 12345 --rate-plan-id "RP01" --rooms 1 --check-in-date 2026-06-20 --check-out-date 2026-06-21 --adults 2
-
-# 5. After the user approves the locked price and provides their Name:
-rgg book --reference-no "REF9999" --first-name "San" --last-name "Zhang"
-```
-
-### Risk level
-**MODERATE** — Can trigger real-world hotel reservations. The skill enforces a strict two-step confirmation gate before making any `book` calls.
-
----
-
