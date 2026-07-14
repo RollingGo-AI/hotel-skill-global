@@ -61,9 +61,14 @@ No more manual price comparisons or worrying about booking too early or too late
 <img width="466" height="203" alt="image" src="https://github.com/user-attachments/assets/2d71ff6a-062c-4499-ba83-0965afcc683b" />
 
 ## ✨ Installation
+### Method 1: Directly Tell Your Agent (Recommended)
+```
+Install this skill for me: https://github.com/RollingGo-AI/hotel-skill-global
+```
+Choose this installation method if you prefer a hassle-free, fully visual workflow.
 
-### Via npx skills (Recommended)
-Automatically compatible with Cursor, Claude Code, Windsurf, and 40+ other agents:
+### Method 2:Via npx skills
+Automatically compatible with Cursor, Claude Code, Windsurf, and 40+ other agents.Use this installation method for development & operations scenarios requiring precise module control and frequent switching between multiple tools.
 
 ```bash
 # Interactive installation (Recommended, freely select capability modules from the menu)
