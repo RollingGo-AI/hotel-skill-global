@@ -7,7 +7,8 @@
 - [hotel-detail](#hotel-detail) — Hotel details
 - [price-confirm](#price-confirm) — Price confirmation
 - [book](#book) — Create order
-- [orders](#orders) — Query orders
+- [orders](#orders) — Query orders list
+- [order-detail](#order-detail) — Query order detail
 
 ---
 
@@ -182,9 +183,10 @@ Create an official order using the referenceNo and return the payment link.
 | CLI Parameter | Type | Required | Description |
 |------|------|------|------|
 | --reference-no | string | ✅ | Booking reference number (from price-confirm) |
-| --first-name | string | ✅ | Contact first name (Pinyin or English) |
-| --last-name | string | ✅ | Contact last name (Pinyin or English) |
-| --guests | string | ❌ | Guest info JSON (usually not needed, defaults to contact info) |
+| --first-name | string | ❌ | Contact first name (Pinyin or English, defaults to first guest) |
+| --last-name | string | ❌ | Contact last name (Pinyin or English, defaults to first guest) |
+| --email | string | ❌ | Contact email |
+| --guest | string | ❌ | Guest info: room,firstName,lastName,isAdult (e.g. `1,San,Zhang,true`) |
 
 **Output**:
 
@@ -193,7 +195,7 @@ Create an official order using the referenceNo and return the payment link.
 | success | boolean | Whether successful |
 | message | string | Result message (contains reason on failure) |
 | bookingResult.orderNo | string | Order number |
-| bookingResult.paymentType | string | Payment type (currently fixed to "URL") |
+| bookingResult.paymentType | string | Payment type |
 | bookingResult.paymentUrl | string | Payment link |
 
 ---
@@ -202,7 +204,13 @@ Create an official order using the referenceNo and return the payment link.
 
 Query all historical hotel orders for the current user.
 
-**Input**: None
+**Input**:
+
+| CLI Parameter | Type | Required | Description |
+|------|------|------|------|
+| -s, --status | string | ❌ | Order status filter (`ALL`, `PENDING`, `FINISHED`) |
+| --start-date | string | ❌ | Start date YYYY-MM-DD |
+| --end-date | string | ❌ | End date YYYY-MM-DD |
 
 **Output**:
 
@@ -211,7 +219,7 @@ Query all historical hotel orders for the current user.
 | message | string | Query result message |
 | orderInfoList | array | Order list |
 | orderInfoList[].hotelBookingInfo.referenceNo | string | Booking reference number |
-| orderInfoList[].hotelBookingInfo.status | string | Order status code ("1"=Pending payment, "3"=Completed/Closed) |
+| orderInfoList[].hotelBookingInfo.status | string | Order status code |
 | orderInfoList[].hotelBookingInfo.mainOrderNo | string | Main order number |
 | orderInfoList[].hotelBookingInfo.subOrderNo | string | Sub-order number |
 | orderInfoList[].hotelBookingInfo.checkInDate | string | Check-in date |
@@ -219,7 +227,7 @@ Query all historical hotel orders for the current user.
 | orderInfoList[].hotelBookingInfo.numOfRooms | integer | Room count |
 | orderInfoList[].hotelBookingInfo.nights | integer | Stay nights |
 | orderInfoList[].hotelBookingInfo.totalPrice | float | Order total price |
-| orderInfoList[].hotelBookingInfo.paymentStatus | string | Payment status (CREATED=Pending, REFUNDED=Refunded) |
+| orderInfoList[].hotelBookingInfo.paymentStatus | string | Payment status |
 | orderInfoList[].hotelBookingHotel.hotelName | string | Hotel name |
 | orderInfoList[].hotelBookingHotel.hotelAddress | string | Hotel address |
 | orderInfoList[].hotelBookingHotel.starRating | string | Star rating |
@@ -227,3 +235,20 @@ Query all historical hotel orders for the current user.
 | orderInfoList[].hotelContact.lastName | string | Contact last name |
 | orderInfoList[].hotelRatePlanInfo.roomName | string | Room type name |
 | orderInfoList[].hotelRatePlanInfo.totalPrice | float | Total price |
+
+---
+
+## order-detail
+
+Query detailed information for a specific order by order number.
+
+**Input**:
+
+```bash
+node scripts/rgg.js order-detail <orderNo>
+```
+
+| Parameter | Type | Required | Description |
+|------|------|------|------|
+| orderNo | string | ✅ | Order number |
+

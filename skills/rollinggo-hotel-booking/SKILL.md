@@ -1,6 +1,6 @@
 ---
 name: rollinggo-hotel-booking
-version: "1.1.0"
+version: "1.1.1"
 repository: "https://github.com/RollingGo-AI/hotel-skill-global"
 description: 'RollingGo Hotel Search & Booking Assistant. Implements the full hotel booking workflow by calling RollingGo hotel APIs. Supported scenarios: ① Search hotels by city, attraction, metro, airport, etc. ② Filter by star rating, budget, tags (pool, breakfast, family, pet-friendly) ③ Query real-time room types and prices for specific hotels ④ Compare multiple hotels ⑤ Guide users to complete booking. Triggers: Find a hotel, book a hotel, search hotels, hotel recommendation, hotel queries, nearby hotels, five-star hotels, homestays, resorts, check prices, check room types, check-in, where to stay, accommodation, rollinggo, travel accommodation, business trip accommodation, family hotels, hotels with a pool, hotels with breakfast.'
 metadata:
@@ -103,107 +103,37 @@ Find a hotel, book a hotel, search hotels, hotel recommendations, hotel queries,
 ## Security Gates
 
 > ⚠️ Hotel booking is an **actual consumption operation**:
-
-1. **Mandatory Two-Step Confirmation**: First display room types and prices, wait for the user to explicitly select a room type and confirm, and only then proceed to lock the price and place the order.
-2. **Information Completeness**: Before placing an order, you must confirm the guest's name (phone numbers and other details will be obtained by default via OAuth, no need for the user to provide them).
-3. **Price Confirmation Validity**: The `referenceNo` is valid for about 15-30 minutes; if it expires, price confirmation must be re-called.
+> 1. **Two-Step Confirmation**: First display room types and prices, wait for user confirmation before locking price and booking.
+> 2. **Information Completeness**: Must confirm guest's English/Pinyin name and email before booking.
+> 3. **Price Confirmation Validity**: Locked price certificate (`referenceNo`) is valid for ~15-30 minutes; re-confirm if expired.
 
 ---
 
-## Workflow
+## Workflow & Dynamic CLI Discovery
 
-**Step 0: Login Auth Check** (Executed on first use or when Token expires)
+> 💡 **Dynamic Command & Parameter Self-Discovery Rule**:
+> 1. **Proxy Invocation**: All CLI subcommands MUST be called via the proxy wrapper: `node scripts/rgg.js <subcommand>` (or `python scripts/rgg.py <subcommand>` if Node is unavailable).
+> 2. **Dynamic Parameter Self-Discovery**: Before executing any subcommand, **ALWAYS run `node scripts/rgg.js <subcommand> --help` first to fetch real-time CLI parameter help**, and dynamically construct options based on the latest `--help`!
 
-1. Run `rgg whoami` to check login status:
-   - **Outputs `✅ Logged in`** → Proceed directly to Step 1
-   - **Outputs `❌ Not logged in`** → Run `rgg login` and enter the authorization flow
+---
 
-2. Authorization Flow (⚠️ Important: The user cannot see the terminal when talking via the Agent. You MUST reply to the user with the authorization info):
+### Business Step Guide
 
-   After running `rgg login`, the terminal will output a QR code and an authorization link. **The Agent MUST:**
-   - Extract the authorization link (format: `https://rollinggo.store/s/xxx`) from the CLI output.
-   - Reply to the user with a clickable link.
-   - Inform the user: "Please click the link to complete authorization, and let me know once successful."
+#### Step 0: Login Auth Check
+- Run `node scripts/rgg.js whoami` to check login status.
+- If not logged in, run `node scripts/rgg.js login` (⚠️ **MUST run asynchronously in background**, e.g. `WaitMsBeforeAsync=2000`). Extract authorization link (`https://rollinggo.store/s/xxx`) from output and send to user.
 
-   **Reply Template**:
-   ```
-   Please click the link below to authorize:
-   [Click to Authorize](https://rollinggo.store/s/xxx)
+#### Step 1: Information Collection
+- Confirm Destination (Mandatory), Check-in Date (Default: Tomorrow), Stay Nights (Default: 1 night), Adult Count (Default: 2).
 
-   Please tell me once authorization is successful, and I will continue booking for you.
-   ```
+#### Step 2: Get Tag Dictionary (As needed)
+- When user mentions specific features (pool, breakfast, family, pet), run `node scripts/rgg.js hotel-tags` to find exact tag names.
 
-   If the platform supports images, you may also generate a QR code image to send, making it easier for mobile users to scan.
+#### Step 3: Search Hotels
+- Run `node scripts/rgg.js search-hotels --help` first to inspect current filter parameters, then construct command.
+- **placeType Selection Rules** (Must match exactly): `city`, `airport`, `point_of_interest`, `train_station`, `subway_station`, `hotel`, `district/county`, `detailed address`.
 
-   Once the user confirms successful authorization, the CLI automatically retrieves the Token, then proceed to Step 1.
-
-**Step 1: Information Collection** (Silent judgment, do not interrupt user)
-
-Extract the following info from the conversation. Use what is given directly; only ask follow-up questions if crucial info is missing:
-
-| Information | Required | Default |
-|------|---------|--------|
-| Destination (City/Attraction/Address) | ✅ Mandatory | None, must ask |
-| Check-in Date | Recommended | Tomorrow |
-| Stay Nights | Recommended | 1 night |
-| Adult Count | Optional | 2 people |
-| Star Rating Preference | Optional | Any |
-| Budget Limit | Optional | Any |
-| Special Requests (Tags) | Optional | None |
-
-Destination is the only mandatory info that must be confirmed. If other info is missing, use defaults; do not interrogate the user step-by-step.
-
-**Step 2: Get Tag Dictionary** (Execute as needed)
-
-When a user mentions specific facilities or features (e.g., "with pool", "with breakfast", "family", "pet"), first execute:
-
-```bash
-rgg hotel-tags
-```
-
-Find the exact tag names from the returned results before using them in the search. Common mappings:
-
-| User Expression | Common Tag Name |
-|---------|-----------|
-| with pool, swimming pool | Outdoor Pool / Indoor Heated Pool |
-| with breakfast, includes breakfast | Breakfast Included |
-| family, with kids | Family Friendly |
-| pet-friendly | Pet Friendly |
-| free parking | Free Parking |
-| Do NOT want X | Corresponding Tag |
-| MUST have X | Corresponding Tag (Hard filter) |
-
-**Step 3: Search Hotels**
-
-Call `rgg search-hotels` to convert user requirements into command line parameters:
-
-```bash
-rgg search-hotels \
-  --origin-query "<User Original Query>" \
-  --place "<Location Name>" \
-  --place-type "<Type>" \
-  [--check-in-date YYYY-MM-DD] [--stay-nights N] \
-  [--star-ratings min,max] \
-  [--preferred-brand "Brand Name"] \
-  [--required-tag "Tag Name"] \
-  [--max-price-per-night N] \
-  --size 5
-```
-
-**placeType Selection Rules** (must match exactly):
-
-| User Description | --place-type |
-|---------|-------------|
-| City name (Beijing, Sanya, Bangkok) | city |
-| Airport (Capital Airport, Pudong) | airport |
-| Attraction (Disney, Universal Studios) | point_of_interest |
-| Train station (Hongqiao Station, Beijing South Station) | train_station |
-| Metro/subway station | subway_station |
-| Hotel name | hotel |
-| District/County/Business Area (Yalong Bay, Chaoyang District) | district/county |
-| Specific street address | detailed address |
-
-**Search Result Display Template** (one card per hotel):
+**Search Result Card Template** (one card per hotel):
 *(CRITICAL: You MUST render the `imageUrl` using standard Markdown image syntax `![alt](url)` and place the image at the end of the template. If `imageUrl` contains unencoded spaces, you must manually replace spaces with `%20`, or wrap the entire URL in angle brackets like `![alt](<url>)` to ensure proper markdown rendering. Do NOT use HTML `<img>` tags and Do NOT output raw URL strings.)*
 
 ```markdown
@@ -211,60 +141,27 @@ rgg search-hotels \
 ⭐ {Star Rating} Stars  *(Show if distanceInMeters exists: 📍 {distanceInMeters}m from {Search Location})*
 💰 Reference Price {Currency} {Lowest Price}/night
 🏷️ {Tag 1} · {Tag 2} · {Tag 3}
-🔗 [View Details & Book]({bookingUrl})
 ![{Hotel Name}]({imageUrl})
 ```
 
 After returning 3-5 hotels, ask the user: "Which hotel's detailed room types and prices would you like to know?"
 
-**Step 4: Query Room Types & Real-time Prices** (After user selects a hotel)
-
-Extract the `hotelId` from the search results and call:
-
-```bash
-rgg hotel-detail \
-  --hotel-id <hotelId> \
-  --check-in-date <Check-in Date> \
-  --check-out-date <Check-out Date> \
-  --adult-count <Adult Count> \
-  --room-count <Room Count>
-```
+#### Step 4: Query Room Types & Real-time Prices
+- Run `node scripts/rgg.js hotel-detail --help` first, pass selected `hotelId` to fetch room rates.
 
 **Room Type Display Template** (one entry per room type):
 
 ```
 🛏️ {Room Type Name} ({Bed Type Description})
-💰 Total Price {Currency} {totalPrice} ({Currency} {Average Price}/night)  {inventoryCount} rooms left
+💰 Total Price {Currency} {totalPrice} ({Currency} {Average Price}/night)
 📋 Cancellation Policy: {Cancellation Policy Description}
 ```
 
-After displaying 3-5 recommended room types, provide a booking link:
-"If you want to book, click [Go to Booking Page]({bookingUrl}) to complete the order."
+After displaying 3-5 recommended room types, guide the user via conversation: "Please tell me which room type you choose, and I will lock the price and process the order for you."
 
-**Step 5: Price Confirmation & Booking** (After user selects a room type)
-
-1. Call `rgg price-confirm` to lock the price (get `referenceNo`). Note the parameters are `--rooms` and `--adults`:
-
-```bash
-rgg price-confirm \
-  --hotel-id <hotelId> \
-  --rate-plan-id <ratePlanId> \
-  --rooms <Room Count> \
-  --check-in-date <Check-in Date> \
-  --check-out-date <Check-out Date> \
-  --adults <Adult Count>
-```
-
-2. After collecting contact info (Pinyin/English name), call `rgg book` to create the order:
-
-```bash
-rgg book \
-  --reference-no "<referenceNo from previous step>" \
-  --first-name "<First Name>" \
-  --last-name "<Last Name>"
-```
-
-3. Extract the payment link from the result and return it to the user.
+#### Step 5: Price Confirmation & Booking (Security Gate)
+1. Run `node scripts/rgg.js price-confirm --help` first, lock price and retrieve `referenceNo`.
+2. Confirm guest name & email, run `node scripts/rgg.js book --help` to submit order and retrieve payment link.
 
 **Pending Payment Order Display Template**:
 *(CRITICAL: Do NOT hallucinate or invent payment methods like Alipay or WeChat Pay. Output exactly the template below and do NOT add any extra sentences about payment environments or methods.)*
@@ -280,34 +177,28 @@ Total Price: {Currency} {Price}
 💳 Please complete payment within 30 minutes: {Payment Link}
 ```
 
-**Step 6: Query Orders** (When user asks)
-
-```bash
-rgg orders
-```
-
-When displaying the order list, clearly extract: **Hotel Name, Check-in/out Dates, Order Status, Total Price**. If it's awaiting payment, include the link to continue payment.
+#### Step 6: Query Orders & Details
+- Run `node scripts/rgg.js orders --help` or `node scripts/rgg.js order-detail --help` to query order list or specific order status.
 
 ---
 
-## Downgrade Strategy When Results Are Not Ideal (Filter Loosening)
+## Semantic Fallback Strategy When Results Are Not Ideal
 
-Relax conditions in the following order to retry:
-1. Remove `--star-ratings` limit
-2. Expand search radius: add `--distance-in-meter 10000`
-3. Remove tag filters (`--required-tag`)
-4. Increase return quantity: `--size 10`
-5. Remove all tag limits, leaving only location and dates
+If search yields 0 results, silently loosen constraints in this order to retry:
+1. Remove star rating limits
+2. Expand search radius / distance parameters
+3. Downgrade hard required tags to preferred tags
+4. Increase return quantity (`size`)
+5. Retain location and check-in date only
 
 ---
 
-## Key Rules
+## Key Interaction Rules
 
-- **Location and Type Must Match**: "Shanghai Bund" matches `景点` (Attraction), not `城市` (City); "Beijing" matches `城市` (City).
-- **Prices Are References**: Search result prices are not real-time locked prices. Label them as "Reference Price".
-- **bookingUrl is Readily Available**: Return the booking link directly for the user to click and navigate.
-- **Do Not Expose hotelId**: Internal IDs are not shown to users, they are strictly for internal calls.
-- **Compare Multiple Hotels**: Display cards for multiple hotels simultaneously when comparing, highlighting differences (price/distance/facilities).
+- **Hide Technical Details**: Never expose `hotelId`, `ratePlanId`, `referenceNo`, raw JSON, or CLI commands to the user.
+- **Reference Prices**: Search prices are labeled as "Reference Price"; actual price is locked via price confirmation.
+- **Valid Payment Links**: Generated order payment links must be directly clickable for users to complete payment.
+- **Multiple Hotel Comparison**: Display multiple hotel cards simultaneously to highlight differences (price/distance/amenities).
 
 ---
 
